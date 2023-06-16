@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
+import yo from '.'
 
 export async function POST(request: NextRequest) {
-  // const { source } = await request.json()
-  // if(!source) throw '!source'
-
-  return NextResponse.json({ status: 'queued' })
+  const { question } = await request.json()
+  if(!question) throw '!question'
+  const safe_question = question.slice(0, 180)
+  const answer = await yo(safe_question)
+  return NextResponse.json({ answer })
 }

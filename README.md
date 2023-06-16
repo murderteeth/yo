@@ -1,4 +1,5 @@
 # yo
+An ai powered chatbot that can help anyone use Yearn Finance.
 
 ## run
 ```bash
