@@ -9,7 +9,8 @@ if you're not sure how to satisfy REQUEST, say "IDK".
 you can only respond with a JMESPath expression or "IDK".`,
 
   user: (query: string) => `
-I have a typscript object of type Vault[] called vaults.
+I have a typscript object of type Vault[] called vaults and I need to finish this code with JMESPath:
+const result = jmespath.search({ vaults }, JMESPath)
 
 REQUEST: ${query}
 
@@ -18,8 +19,6 @@ interface Vault {
   address: string;
   name: string;
   version: string;
-  token_address: string;
-  token_name: string;
   token_symbol: string;
   inception: number;
   details_management_fee: number;

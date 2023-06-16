@@ -31,6 +31,8 @@ export async function handle_gpt_function_call(call: ChatCompletionRequestMessag
   const raw = await axios.get<Vault[]>(`${endpoint}/1/vaults/all`).then(response => response.data)
   const vaults = raw.map(vault => flatten(deepUpdate(defaultVault, vault)))
   const result = jmespath.search({ vaults }, jmesExpression as string)
+  console.log('vaults', vaults.length)
+  console.log('result', result.length)
   const results = (Array.isArray(result) ? result.flat() : [result])
   const sortedAndTrimmed = results.sort((a, b) => b.tvl_tvl - a.tvl_tvl).slice(0, 3)
   const addresses = sortedAndTrimmed.map((vault: { address: string }) => vault.address)
