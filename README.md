@@ -1,8 +1,7 @@
 # yo
-
-![mechafox-2-md](https://github.com/murderteeth/yo/assets/89237203/6e679bba-4477-438a-b055-b3acd5ac08b9)
-
 An ai powered chatbot that can help anyone use Yearn Finance.
+
+![mechafox-2-md](https://github.com/murderteeth/yo/assets/89237203/fa100525-6cf9-4ba7-8b15-2642547030b3)
 
 ## run
 ```bash
