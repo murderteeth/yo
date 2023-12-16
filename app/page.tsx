@@ -1,14 +1,14 @@
 'use client'
 
-import Messenger from '@/components/Messenger'
+import Messenger, { MessageGram } from '@/components/Messenger'
 import useKeypress from 'react-use-keypress'
 import { RiSendPlane2Line } from 'react-icons/ri'
 import { A, Button, Input } from '@/components/controls'
 import { useBusy } from '@/hooks/useBusy'
 import { useMessages } from '@/hooks/useMessages'
-import Image from 'next/image'
 import { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
+import Connect from '@/components/controls/Connect'
 
 function Panel({className, children}: {className?: string, children?: ReactNode}) {
   return <div className={`
@@ -18,13 +18,49 @@ function Panel({className, children}: {className?: string, children?: ReactNode}
   </div>
 }
 
-export default function Home() {
+const AHOY_TIMEOUT = 3000
+let AHOY_TIMEOUT_ID: NodeJS.Timeout | undefined
+function useAhoy() {
+  const { setBusy } = useBusy()
+  const { setMessages } = useMessages()
+
+  const ahoy = `
+Yo!
+I\'m the bot that helps you manage your assets with Yearn Finance
+I can help you with things like:
+• Checking your balances
+• Deposits and withdrawals
+• Managing your own vault 👀
+lfg 🤘
+`
+
+  useEffect(() => {
+    if(!AHOY_TIMEOUT_ID) {
+      setBusy(true)
+      setMessages(current => [...current, {role: 'assistant', contentType: 'busy'}])
+    } else {
+      clearTimeout(AHOY_TIMEOUT_ID)
+    }
+
+    AHOY_TIMEOUT_ID = setTimeout(() => {
+      setMessages(current => {
+        const message: MessageGram = { role: 'assistant', contentType: 'text', content: ahoy }
+        const result = [...current.slice(0, -1), message]
+        return result
+      })
+      setBusy(false)
+    }, AHOY_TIMEOUT)
+  }, [setBusy, setMessages])
+}
+
+export default function Lander() {
   const { busy, setBusy } = useBusy()
   const { messages, setMessages } = useMessages()
   const promptInput = useRef<HTMLInputElement>(null)
   const [prompterFocus, setPrompterFocus] = useState(false)
   const mediumBreakpoint = useMediaQuery({ minWidth: 768 })
 
+  useAhoy()
   useEffect(() => promptInput.current?.focus(), [])
 
   const focusPrompter = useCallback(() => {
@@ -62,9 +98,11 @@ export default function Home() {
         },
         body: JSON.stringify({ question: userPrompt })
       })
-  
+
+      if(response.status !== 200) throw new Error('Bad response')
+
       const { answer } = await response.json()
-  
+
       setMessages(current => {
         return [...current.slice(0, -1), 
           {role: 'assistant', content: answer }
@@ -97,6 +135,8 @@ export default function Home() {
     </Panel>
 
     <div className={`relative w-full sm:w-[40%] h-full sm:pb-4 flex flex-col items-center justify-between gap-4`}>
+      <Connect className={'absolute top-6 right-6 h-12'} />
+
       <Messenger />
       <div className={'relative w-full px-2 sm:px-6 py-4'}>
         <div className={'w-full flex items-center gap-2 sm:gap-4'}>
@@ -120,18 +160,13 @@ export default function Home() {
         <div className={'absolute z-10 bottom-0 pb-4 flex flex-col items-center '}>
           <div className={'flex items-end gap-4'}>
             <div className={'font-bold text-8xl'}>{'Yo'}</div>
-            <div className={'w-52 drop-shadow-lg'}>{`An ai powered chatbot that can help anyone use Yearn Finance`}</div>
+            <div className={'w-52 drop-shadow-lg'}>{`The bot that helps you manage your assets with Yearn Finance`}</div>
           </div>
-
           <div className={'py-2 flex items-center gap-6'}>
             <A href={'https://github.com/murderteeth/yo'} target={'_blank'} rel={'noreferrer'}>{'yo.git'}</A>
             <A href={'https://yearn.finance'} target={'_blank'} rel={'noreferrer'}>{'yearn.fi'}</A>
-            <A href={'https://github.com/yearn/ygenius-brain'} target={'_blank'} rel={'noreferrer'}>{'ygenius'}</A>
-            <A href={'https://github.com/yearn/ydaemon'} target={'_blank'} rel={'noreferrer'}>{'ydaemon'}</A>
           </div>
         </div>
-
-        <Image src={'/mechafox.png'} alt={'yo'} width={216} height={340} className={'absolute z-1 bottom-0'} />
       </div>
     </Panel>
   </main>

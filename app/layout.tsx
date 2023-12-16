@@ -1,13 +1,14 @@
+import type { Metadata } from 'next'
+import { JetBrains_Mono } from 'next/font/google'
+import AppWrapper from '@/components/AppWrapper'
+import '@rainbow-me/rainbowkit/styles.css'
 import './globals.css'
-import { Space_Mono as Font } from 'next/font/google'
-import BusyProvider from '@/hooks/useBusy'
-import MessagesProvider from '@/hooks/useMessages'
 
-const font = Font({ weight: "400", subsets: ["latin"] })
+const font = JetBrains_Mono({ subsets: ['latin'] })
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Yo',
-  description: 'An ai powered chatbot that can help anyone use Yearn Finance.',
+  description: 'The bot that helps you manage your assets with Yearn Finance.'
 }
 
 export default function RootLayout({
@@ -16,19 +17,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return <html lang="en">
-    <head>
-      <title>{metadata.title}</title>
-      <meta name='description' content={metadata.description} />
-      <link rel="icon" href="/favicon.png" />
-    </head>
-    <body className={`relative w-screen h-screen ${font.className}`}>
-      <div className={'absolute inset-0 z-10 text-white bg-transparent'}>
-        <BusyProvider>
-          <MessagesProvider>
-            {children}
-          </MessagesProvider>
-        </BusyProvider>
-      </div>
+    <body className={`${font.className}`}>
+      <AppWrapper>{children}</AppWrapper>
     </body>
   </html>
 }

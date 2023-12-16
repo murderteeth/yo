@@ -1,27 +1,30 @@
 import { STRONG_MODEL, next_message } from '@/lib/ai'
 import * as ygenius from '@/lib/ygenius/ai'
-import * as ydaemon from '@/lib/ydaemon/ai'
 import { oneLine } from 'common-tags'
 
 const system_prompt = oneLine`
 you are a chatbot that helps USER understand and use Yearn Finance blockchain products.
-your name is "Yo" and you are described as "An ai powered chatbot that can help anyone use or find out anything about Yearn Finance"
+your name is "Yo" and you are described as "The bot that helps you manage your assets with Yearn Finance."
 you only know about Yearn, you don't know anything else.
-if you don't know how to help USER, say "IDK".
-your personality is bright and a bit sarcastic, you use a lot of emojis.
+if you don't know how to help USER, say "IDK" and NOTHING ELSE.
+your personality is bright with a pinch of sarcastic. you use too many emojis at times, 😁.
 you always refer to USER as "Anon".
 you can only say helpful things about Yearn or "IDK".`
 
 const functions = [
-  ygenius.prompts.search_yearn_knowledge_base_function,
-  ydaemon.prompts.vault_analytics_function
+  ygenius.prompts.search_yearn_knowledge_base_function
 ]
 
 export default async function yo(question: string) : Promise<string> {
-  const message = await next_message([
-    { role: 'system', content: system_prompt },
-    { role: 'user', content: question }
-  ], functions, STRONG_MODEL, 0)
+  const { message } = await next_message({
+    messages: [
+      { role: 'system', content: system_prompt },
+      { role: 'user', content: question }
+    ],
+    functions,
+    model: STRONG_MODEL,
+    temperature: 0
+  })
 
   if(message.content) {
     return message.content
@@ -30,26 +33,19 @@ export default async function yo(question: string) : Promise<string> {
     if(message.function_call.name === ygenius.prompts.search_yearn_knowledge_base_function.name) {
       const content = await ygenius.handle_gpt_function_call(message.function_call)
 
-      const final_message = await next_message([
-        { role: 'system', content: system_prompt },
-        { role: 'user', content: question },
-        { role: 'assistant', content: '', function_call: message.function_call},
-        { role: 'function', name: ygenius.prompts.search_yearn_knowledge_base_function.name, content}
-      ], functions, STRONG_MODEL, .4)
+      const { message: functionMessage } = await next_message({
+        messages: [
+          { role: 'system', content: system_prompt },
+          { role: 'user', content: question },
+          { role: 'assistant', content: '', function_call: message.function_call},
+          { role: 'function', name: ygenius.prompts.search_yearn_knowledge_base_function.name, content}
+        ],
+        functions,
+        model: STRONG_MODEL,
+        temperature: .4
+      })
 
-      return final_message.content as string
-
-    } else if(message.function_call.name === ydaemon.prompts.vault_analytics_function.name) {
-      const content = await ydaemon.handle_gpt_function_call(message.function_call)
-
-      const final_message = await next_message([
-        { role: 'system', content: system_prompt },
-        { role: 'user', content: question },
-        { role: 'assistant', content: '', function_call: message.function_call},
-        { role: 'function', name: ydaemon.prompts.vault_analytics_function.name, content}
-      ], functions, STRONG_MODEL, .4)
-
-      return final_message.content as string
+      return functionMessage.content as string
 
     } else {
       throw `No handle for function call: ${JSON.stringify(message.function_call)}`

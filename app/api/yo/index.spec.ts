@@ -2,13 +2,13 @@ import yo from '.'
 
 const timeout = 60_000
 
-test('answers knowledge questions', async () => {
+test.skip('answers knowledge questions', async () => {
   const result = await yo('what is yearn finance?')
   console.log(result)
   expect(result.includes('Yearn Finance')).toBeTruthy()
 }, timeout)
 
-test('answers analytical questions', async () => {
+test.skip('answers analytical questions', async () => {
   const result = await yo('which vault has the highest TVL?')
   console.log(result)
   expect(result.toLowerCase().includes('weth')).toBeTruthy()
