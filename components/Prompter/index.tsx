@@ -1,14 +1,17 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Button, Input } from './controls'
+import { Button, Input } from '../controls'
 import { useBusy } from '@/hooks/useBusy'
 import { useMediaQuery } from 'react-responsive'
 import { useMessages } from '@/hooks/useMessages'
 import { RiSendPlane2Line } from 'react-icons/ri'
 import useKeypress from 'react-use-keypress'
+import Menu from './Menu'
+import { useMenu } from '@/hooks/useMenu'
 
 export default function Prompter({ className }: { className?: string }) {
   const { busy, setBusy } = useBusy()
   const { messages, setMessages } = useMessages()
+  const { setMenu } = useMenu()
   const promptInput = useRef<HTMLInputElement>(null)
   const [prompterFocus, setPrompterFocus] = useState(false)
   const mediumBreakpoint = useMediaQuery({ minWidth: 768 })
@@ -53,13 +56,15 @@ export default function Prompter({ className }: { className?: string }) {
 
       if(response.status !== 200) throw new Error('Bad response')
 
-      const { answer } = await response.json()
+      const { next, menu } = await response.json()
 
       setMessages(current => {
         return [...current.slice(0, -1), 
-          {role: 'assistant', content: answer }
+          {role: 'assistant', content: next }
         ]
       })
+
+      setMenu(menu)
 
     } catch(error) {
       console.error(error)
@@ -74,7 +79,7 @@ export default function Prompter({ className }: { className?: string }) {
 
     promptInput.current.value = ''
     focusPrompter()
-  }, [promptInput, messages, setMessages, setBusy, focusPrompter])
+  }, [promptInput, messages, setMessages, setMenu, setBusy, focusPrompter])
 
   let hello_timeout_handle: NodeJS.Timeout | undefined = undefined
   useEffect(() => {
@@ -87,23 +92,33 @@ export default function Prompter({ className }: { className?: string }) {
     }, 50)
   }, [promptInput, messages, onPrompt])
 
+  const onMenuSelect = useCallback((option: string) => {
+    if(!promptInput.current) return
+    promptInput.current.value = option
+    onPrompt()
+  }, [promptInput, onPrompt])
+
   useKeypress(['/'], () => focusPrompter())
   useKeypress(['Enter'], useCallback(() => {
     if(!prompterFocus) return
     onPrompt()
   }, [prompterFocus, onPrompt]))
 
-  return <div className={`w-full flex items-center gap-2 sm:gap-4 ${className}`}>
-    <Input
-      ref={promptInput} 
-      type={'text'} 
-      disabled={busy}
-      onFocus={() => setPrompterFocus(true)}
-      onBlur={() => setPrompterFocus(false)}
-      maxLength={280} 
-      className={'grow w-64 h-12'} />
-    <Button onClick={onPrompt} disabled={busy} className={'h-12'}>
-      <RiSendPlane2Line size={20} />
-    </Button>
+  return <div className={`w-full flex flex-col gap-2 sm:gap-4 ${className}`}>
+    <Menu onSelect={onMenuSelect} />
+    <div className={`w-full flex items-center gap-2 sm:gap-4`}>
+      <Input
+        ref={promptInput} 
+        type={'text'} 
+        disabled={busy}
+        onFocus={() => setPrompterFocus(true)}
+        onBlur={() => setPrompterFocus(false)}
+        maxLength={280} 
+        className={'grow w-64 h-12'} />
+      <Button onClick={onPrompt} disabled={busy} className={'h-12'}>
+        <RiSendPlane2Line size={20} />
+      </Button>
+    </div>
+
   </div>
 }

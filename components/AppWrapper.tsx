@@ -1,6 +1,7 @@
 'use client'
 
 import BusyProvider from '@/hooks/useBusy'
+import MenuProvider from '@/hooks/useMenu'
 import MessagesProvider from '@/hooks/useMessages'
 import { RainbowKitProvider, darkTheme, getDefaultWallets } from '@rainbow-me/rainbowkit'
 import { polygon } from 'viem/chains'
@@ -24,7 +25,9 @@ export default function AppWrapper ({ children }: { children: React.ReactNode })
     <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider chains={chains} theme={darkTheme()}>
         <MessagesProvider>
-          {children}
+          <MenuProvider>
+            {children}
+          </MenuProvider>
         </MessagesProvider>
       </RainbowKitProvider>
     </WagmiConfig>

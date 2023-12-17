@@ -13,6 +13,12 @@ make dev
 ```
 
 
+## test
+```sh
+bun test
+```
+
+
 ### tmux
 **quit** - `ctrl+b`, `:` then `kill-session` (your dev environment will also shutdown gracefully)
 

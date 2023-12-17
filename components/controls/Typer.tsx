@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
 import colors from 'tailwindcss/colors'
 
-export default function Typer({ children }: { children: string }) {
+export default function Typer({ children }: { children?: string }) {
   const speed = 20
   const [index, setIndex] = useState(0)
-  const length = useMemo(() => children.length, [children])
-  const typed = useMemo(() => children.slice(0, index), [children, index])
+  const length = useMemo(() => children?.length || 0, [children])
+  const typed = useMemo(() => children?.slice(0, index) || '', [children, index])
   const [typing, setTyping] = useState(false)
 
   useEffect(() => { 
@@ -31,13 +31,13 @@ export default function Typer({ children }: { children: string }) {
 export function Cursor({ char = '░' }) {
   const palette = [
     colors.white,
-    colors.purple[200],
-    colors.red[200],
-    colors.green[200],
-    colors.yellow[200],
-    colors.blue[200],
-    colors.violet[200],
-    colors.orange[200]
+    colors.purple[300],
+    colors.red[300],
+    colors.green[300],
+    colors.yellow[300],
+    colors.blue[300],
+    colors.violet[300],
+    colors.orange[300]
   ]
 
   const [color, setColor] = useState(palette[0])

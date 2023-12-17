@@ -2,12 +2,6 @@ import { STRONG_MODEL, gptFunctionDefs, gptFunctions, next_message } from '@/lib
 import { oneLine } from 'common-tags'
 import { ChatCompletionMessageParam } from 'openai/resources/index.mjs'
 
-export interface Message {
-  role: 'user' | 'assistant' | 'system' | 'function'
-  content?: string
-  name?: string
-}
-
 const system_prompt = oneLine`
 you are a chatbot that helps USER understand and use Yearn Finance blockchain products.
 your name is "Yo" and you are described as "The bot that helps you manage your assets with Yearn Finance."
@@ -17,7 +11,7 @@ your personality is bright with a pinch of sarcastic. you use too many emojis at
 you always refer to USER as "Anon".
 you can only say helpful things about Yearn or "IDK".`
 
-export default async function chat(history: ChatCompletionMessageParam[]) : Promise<string> {
+export async function next(history: ChatCompletionMessageParam[]) : Promise<string> {
   history.splice(0, 0, { role: 'system', content: system_prompt })
 
   const { message } = await next_message({

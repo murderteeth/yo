@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
-import chat from '.'
 import { ChatCompletionMessageParam } from 'openai/resources/index.mjs'
 import { sleep } from 'openai/core.mjs'
+import { next } from '@/lib/ai/agents/chat'
+import { next as nextMenu } from '@/lib/ai/agents/menu'
+import { DEFAULT_MENU } from '@/lib/ai/agents/menu'
 
 const hello = `Yo!
 I\'m the bot that helps you manage your assets with Yearn Finance
@@ -18,13 +20,15 @@ export async function POST(request: NextRequest) {
 
   if(history.length === 0) {
     await sleep(Math.random() * 2000 + 2000)
-    return NextResponse.json({ answer: hello })
+    return NextResponse.json({ next: hello, menu: DEFAULT_MENU })
   }
 
   const last_message = history[history.length - 1]
   if(last_message.role !== 'user') throw 'last_message.role != user'
   last_message.content = (last_message.content as string).trim().slice(0, 280)
 
-  const answer = await chat(history)
-  return NextResponse.json({ answer })
+  const assistantResponse = await next(history)
+  const menu = await nextMenu(assistantResponse)
+
+  return NextResponse.json({ next: assistantResponse, menu })
 }
