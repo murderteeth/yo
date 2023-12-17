@@ -45,7 +45,7 @@ export function Cursor({ char = '░' }) {
   useEffect(() => {
     const interval = setInterval(() => {
       setColor(palette[Math.floor(Math.random() * palette.length)])
-    }, 1000)
+    }, 250)
     return () => clearInterval(interval)
   }, [setColor])
 

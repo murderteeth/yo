@@ -2,13 +2,14 @@
 
 import Messenger from '@/components/Messenger'
 import { A } from '@/components/controls'
-import { ReactNode } from 'react'
+import { ReactNode, useCallback } from 'react'
 import Connect from '@/components/controls/Connect'
 import Prompter from '@/components/Prompter'
+import Yo from '@/components/Yo'
 
 function Panel({className, children}: {className?: string, children?: ReactNode}) {
   return <div className={`
-    border border-zinc-900
+    bg-black/20 border border-zinc-900/40
     ${className}`}>
     {children}
   </div>
@@ -31,7 +32,7 @@ export default function Lander() {
       <div className={'relative w-3/4 h-96 flex flex-col items-center'}>
         <div className={'absolute z-10 bottom-0 pb-4 flex flex-col items-center '}>
           <div className={'flex items-end gap-4'}>
-            <div className={'font-bold text-8xl'}>{'Yo'}</div>
+            <Yo />
             <div className={'w-52 drop-shadow-lg'}>{`The bot that helps you manage your assets with Yearn Finance`}</div>
           </div>
           <div className={'py-2 flex items-center gap-6'}>

@@ -9,7 +9,7 @@ const config: Config = {
   theme: {
     extend: {
       animation: {
-        'flicker': 'pulse 450ms cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'flicker': 'pulse 250ms cubic-bezier(1, 0, 0.6, 1) infinite',
       }
     }
   },

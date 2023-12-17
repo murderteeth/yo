@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import chat, { Message } from '.'
+import chat from '.'
 import { ChatCompletionMessageParam } from 'openai/resources/index.mjs'
 import { sleep } from 'openai/core.mjs'
 
