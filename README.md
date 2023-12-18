@@ -34,3 +34,10 @@ bun test --only
 
 **more** - [tmux shortcuts & cheatsheet](https://gist.github.com/MohamedAlaa/2961058)
 
+
+### original wireframes
+
+![yo - 0 1](https://github.com/murderteeth/yo/assets/89237203/806338be-6b18-42f7-9a2e-9a2af6e430f7)
+
+![yo - x x](https://github.com/murderteeth/yo/assets/89237203/3322e7ee-0b8c-43c4-9340-b10c47e86012)
+
