@@ -1,18 +1,36 @@
 # yo
-An ai powered chatbot that can help anyone use Yearn Finance.
+The bot that helps you manage your assets with Yearn Finance.
 
-![mechafox-2-md](https://github.com/murderteeth/yo/assets/89237203/fa100525-6cf9-4ba7-8b15-2642547030b3)
+![image](https://github.com/murderteeth/yo/assets/89237203/457188d4-bcf5-45a3-bb14-b8a48a091bed)
 
-## run
-```bash
-cp .env.local.example .env.local
-# configure your open ai api key in .env.local
-yarn
-yarn dev
+
+#### requirements
+make, bun, tmux
+
+
+## lfg
+```sh
+cp .env.example .env
+# configure .env
+make dev
 ```
+
 
 ## test
-```bash
-export OPEN_AI_API_KEY=...
-yarn test
+```sh
+bun test
+bun test --only
 ```
+
+
+### tmux
+**quit** - `ctrl+b`, `:` then `kill-session` (your dev environment will also shutdown gracefully)
+
+**pane navigation** - `ctrl+b` then `arrow keys`
+
+**zoom\unzoom pane** - `ctrl+b` then `z`
+
+**scroll** - `ctrl+b` then `[` then `arrow keys` or `page up\down keys` then `q` to quit scroll mode
+
+**more** - [tmux shortcuts & cheatsheet](https://gist.github.com/MohamedAlaa/2961058)
+

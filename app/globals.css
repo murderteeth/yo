@@ -3,5 +3,9 @@
 @tailwind utilities;
 
 body {
-  @apply bg-black text-white;
+  @apply h-screen bg-zinc-950 text-white;
+}
+
+body > div:first-child {
+  @apply h-full;
 }

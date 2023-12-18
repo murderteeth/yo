@@ -8,13 +8,13 @@ export interface Messages {
 	setMessages: React.Dispatch<React.SetStateAction<MessageGram[]>>
 }
 
-export const messagesContext = createContext<Messages>({} as Messages)
+export const context = createContext<Messages>({} as Messages)
 
-export const useMessages = () => useContext(messagesContext)
+export const useMessages = () => useContext(context)
 
-export default function MessagesProvider({children}: {children: ReactNode}) {
+export default function MessagesProvider({ children }: { children: ReactNode }) {
   const [messages, setMessages] = useState<MessageGram[]>([])
-	return <messagesContext.Provider value={{messages, setMessages}}>
+	return <context.Provider value={{ messages, setMessages }}>
 		{children}
-	</messagesContext.Provider>
+	</context.Provider>
 }

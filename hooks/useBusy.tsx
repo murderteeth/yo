@@ -7,13 +7,13 @@ interface IBusy {
   setBusy: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const	BusyContext = createContext({} as IBusy)
+const	context = createContext({} as IBusy)
 
-export const useBusy = () => useContext(BusyContext)
+export const useBusy = () => useContext(context)
 
 export default function BusyProvider({ children } : { children: ReactNode }) {
   const [busy, setBusy] = useState(false)
-  return <BusyContext.Provider value={{ busy, setBusy }}>
+  return <context.Provider value={{ busy, setBusy }}>
     {children}
-  </BusyContext.Provider>
+  </context.Provider>
 }
