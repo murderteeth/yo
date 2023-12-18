@@ -4,11 +4,11 @@ import { ChatCompletionMessageParam } from 'openai/resources/index.mjs'
 export const DEFAULT_MENU = ['Vaults', 'Balances', 'Deposits', 'Chef']
 
 const system_prompt = `
-ASSIGNMENT
+# assignment
 - review the assistant's message and respond with a list of relevant menu options.
-- use the MENUS structure to inform your response.
+- use the MENUS structure as your data source.
 
-MENUS
+## menus
 [
   {
     name: "DEFAULT_MENU",
@@ -17,10 +17,10 @@ MENUS
   }
 ]
 
-OUTPUT_FORMAT
+## output format
 a comma separated list of options. NO OTHER TEXT!
 
-OUTPUT_EXAMPLE
+## output example
 Option One, Option Two, Option Three
 `
 
@@ -32,7 +32,6 @@ export async function next(assistantMessage: string) : Promise<string[]> {
  
   const { message } = await next_message({
     messages,
-    functions: gptFunctionDefs,
     model: FAST_MODEL,
     temperature: 0
   })

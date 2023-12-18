@@ -40,7 +40,7 @@ export async function next_message(params: OpenAI.Chat.ChatCompletionCreateParam
 : Promise<OpenAI.Chat.Completions.ChatCompletion.Choice> {
   const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 
-  if(process.env.NODE_ENV === 'development') {
+  if(process.env.LOG_PROMPTS === 'true') {
     console.log('model', params.model)
     console.log('messages> ---------------')
     params.messages.forEach(message => {

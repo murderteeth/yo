@@ -2,7 +2,9 @@ import axios from 'axios'
 import { OpenAI } from 'openai'
 import { GptFunction, GptFunctionDef } from '..'
 import path from 'path'
+import os from 'os'
 import fs from 'fs'
+import { transformYDaemonVaults } from '@/lib/types/vault'
 
 const vaults = {
   humanName: 'Vaults',
@@ -11,7 +13,7 @@ const vaults = {
 
   def: {
     name: 'search_yearn_vaults',
-    description: 'returns a list of vaults',
+    description: 'find vaults and return their information',
     parameters: {
       type: 'object',
       properties: {
@@ -26,7 +28,7 @@ const vaults = {
 
   handler: async function(call: OpenAI.Chat.ChatCompletionMessage.FunctionCall) {
     if(!call.arguments) throw '!call.arguments'
-    const result = fetchVaults()
+    const result = await fetchVaults()
     return JSON.stringify(result)
   }
 } as GptFunction
@@ -35,9 +37,10 @@ export default vaults
 
 export async function fetchVaults() {
   if(process.env.NODE_ENV === 'development') {
-    return transformYDaemonVaults(await fetchMocks())
+    console.warn('fetch mock vaults')
+    return transformYDaemonVaults(await fetchMocks(), true)
   } else {
-    return transformYDaemonVaults(await fetchYDaemon())
+    return transformYDaemonVaults(await fetchYDaemon(), true)
   }
 }
 
@@ -48,7 +51,7 @@ async function fetchYDaemon() {
 }
 
 async function fetchMocks() {
-  const filePath = path.join(path.dirname(__filename), '../../.local', 'vaults.json')
+  const filePath = path.join(os.homedir(), 'git/yo/.local', 'vaults.json')
   if(!fs.existsSync(filePath)) throw `!fs.existsSync(filePath) ${filePath}. Try\n\n${MAKE_MOCKS}\n\n`
   const fileData = await fs.promises.readFile(filePath, 'utf8')
   return JSON.parse(fileData)
@@ -67,23 +70,3 @@ async function main() {
 
 main()
 `
-
-function transformYDaemonVaults(ydaemonVaults: any[]) {
-  return ydaemonVaults.map((v: any) => ({
-    address: v.address,
-    name: v.display_name,
-    symbol: v.display_symbol,
-    icon: v.icon,
-    description: v.description,
-    decimals: v.decimals,
-    token: {
-      address: v.token.address,
-      name: v.token.display_name,
-      symbol: v.token.display_symbol
-    },
-    tvl: v.tvl.tvl,
-    apr: v.apr.netAPR,
-    forwardapr: v.apr.forwardAPR.netAPR,
-    strategies: v.strategies.length
-  }))
-}

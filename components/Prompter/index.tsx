@@ -7,11 +7,13 @@ import { RiSendPlane2Line } from 'react-icons/ri'
 import useKeypress from 'react-use-keypress'
 import Menu from './Menu'
 import { useMenu } from '@/hooks/useMenu'
+import { useSubjects } from '@/hooks/useSubjects'
 
 export default function Prompter({ className }: { className?: string }) {
   const { busy, setBusy } = useBusy()
   const { messages, setMessages } = useMessages()
   const { setMenu } = useMenu()
+  const { setSubjects } = useSubjects()
   const promptInput = useRef<HTMLInputElement>(null)
   const [prompterFocus, setPrompterFocus] = useState(false)
   const mediumBreakpoint = useMediaQuery({ minWidth: 768 })
@@ -56,7 +58,7 @@ export default function Prompter({ className }: { className?: string }) {
 
       if(response.status !== 200) throw new Error('Bad response')
 
-      const { next, menu } = await response.json()
+      const { next, menu, vaults } = await response.json()
 
       setMessages(current => {
         return [...current.slice(0, -1), 
@@ -65,6 +67,7 @@ export default function Prompter({ className }: { className?: string }) {
       })
 
       setMenu(menu)
+      setSubjects(current => [...current, ...(vaults || []).map((v: any) => ({ type: 'vault', id: v }))])
 
     } catch(error) {
       console.error(error)
@@ -79,7 +82,7 @@ export default function Prompter({ className }: { className?: string }) {
 
     promptInput.current.value = ''
     focusPrompter()
-  }, [promptInput, messages, setMessages, setMenu, setBusy, focusPrompter])
+  }, [promptInput, messages, setMessages, setMenu, setSubjects, setBusy, focusPrompter])
 
   let hello_timeout_handle: NodeJS.Timeout | undefined = undefined
   useEffect(() => {

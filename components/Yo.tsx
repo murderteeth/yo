@@ -1,5 +1,6 @@
 import { useMenu } from '@/hooks/useMenu'
 import { useMessages } from '@/hooks/useMessages'
+import { useSubjects } from '@/hooks/useSubjects'
 import { useCallback, HTMLAttributes, forwardRef } from 'react'
 import { useLongPress } from 'use-long-press'
 
@@ -11,12 +12,14 @@ type Props = HTMLAttributes<HTMLDivElement> & {
 const Yo = forwardRef<HTMLDivElement, Props>(({ className, ...props }, ref) => {
   const { setMessages } = useMessages()
   const { setMenu } = useMenu()
+  const { setSubjects } = useSubjects()
 
   const onLongPress = useCallback(() => {
     if(props.disabled == true) return
     setMessages([])
     setMenu([])
-  }, [props, setMessages, setMenu])
+    setSubjects([])
+  }, [props, setMessages, setMenu, setSubjects])
 
   const bindClicks = useLongPress(onLongPress, {
     onCancel: useCallback(() => {

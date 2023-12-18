@@ -12,7 +12,7 @@ export const context = createContext<Messages>({} as Messages)
 
 export const useMessages = () => useContext(context)
 
-export default function MessagesProvider({children}: {children: ReactNode}) {
+export default function MessagesProvider({ children }: { children: ReactNode }) {
   const [messages, setMessages] = useState<MessageGram[]>([])
 	return <context.Provider value={{ messages, setMessages }}>
 		{children}

@@ -3,6 +3,7 @@ import { ChatCompletionMessageParam } from 'openai/resources/index.mjs'
 import { sleep } from 'openai/core.mjs'
 import { next } from '@/lib/ai/agents/chat'
 import { next as nextMenu } from '@/lib/ai/agents/menu'
+import { next as nextVaults } from '@/lib/ai/agents/subject'
 import { DEFAULT_MENU } from '@/lib/ai/agents/menu'
 
 const hello = `Yo!
@@ -29,7 +30,9 @@ export async function POST(request: NextRequest) {
   last_message.content = (last_message.content as string).trim().slice(0, 280)
 
   const assistantResponse = await next(history)
-  const menu = await nextMenu(assistantResponse)
+  const agentResponses = await Promise.all([await nextMenu(assistantResponse), await nextVaults(assistantResponse)])
+  const menu = agentResponses[0]
+  const vaults = agentResponses[1]
 
-  return NextResponse.json({ next: assistantResponse, menu })
+  return NextResponse.json({ next: assistantResponse, menu, vaults })
 }

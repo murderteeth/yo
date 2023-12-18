@@ -3,6 +3,7 @@
 import BusyProvider from '@/hooks/useBusy'
 import MenuProvider from '@/hooks/useMenu'
 import MessagesProvider from '@/hooks/useMessages'
+import SubjectsProvider from '@/hooks/useSubjects'
 import { RainbowKitProvider, darkTheme, getDefaultWallets } from '@rainbow-me/rainbowkit'
 import { polygon } from 'viem/chains'
 import { WagmiConfig, configureChains, createConfig } from 'wagmi'
@@ -26,7 +27,9 @@ export default function AppWrapper ({ children }: { children: React.ReactNode })
       <RainbowKitProvider chains={chains} theme={darkTheme()}>
         <MessagesProvider>
           <MenuProvider>
-            {children}
+            <SubjectsProvider>
+              {children}
+            </SubjectsProvider>
           </MenuProvider>
         </MessagesProvider>
       </RainbowKitProvider>

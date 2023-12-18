@@ -37,7 +37,7 @@ export default function Messenger() {
 
   return <div className={`
     w-full h-full grow px-6 flex flex-col gap-4 overflow-y-auto scroll-smooth 
-    sm:scrollbar-thin sm:scrollbar-thumb-red-950 sm:hover:scrollbar-thumb-red-700 sm:scrollbar-track-zinc-950`}>
+    sm:scrollbar-thin sm:scrollbar-thumb-black sm:hover:scrollbar-thumb-red-700 sm:scrollbar-track-zinc-950`}>
     <div className={'mt-auto'}></div>
 
     {messages.map((message, index) => {

@@ -11,7 +11,7 @@ export const context = createContext<Context>({} as Context)
 
 export const useMenu = () => useContext(context)
 
-export default function MenuProvider({children}: {children: ReactNode}) {
+export default function MenuProvider({ children }: { children: ReactNode }) {
   const [menu, setMenu] = useState<string[]>([])
 	return <context.Provider value={{ menu, setMenu }}>
 		{children}

@@ -9,7 +9,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({ className, ...props },
     px-4 py-2 
     text-xl text-red-700
     bg-zinc-950 
-    border border-zinc-900 rounded
+    border-2 border-black rounded
     hover:border-red-500
     focus:border-red-700
     disabled:text-gray-800 hover:disabled:border-zinc-900 disabled:placeholder-gray-800
