@@ -1,3 +1,4 @@
+import { expect, it } from 'bun:test'
 import { ChatCompletionMessageParam } from 'openai/resources/index.mjs'
 import { next } from './chat'
 
@@ -35,4 +36,12 @@ it('IDKs anything else', async () => {
   }] as ChatCompletionMessageParam[]
   const result = await next(history)
   expect(result).toBe('IDK')
+}, timeout)
+
+it.only('Finds multi-strategy vaults', async () => {
+  const history = [{
+    role: 'user', content: 'howdy fren you got multi-strategy USDC vaults?'
+  }] as ChatCompletionMessageParam[]
+  const result = await next(history)
+  expect(result).toContain('USDC-A')
 }, timeout)

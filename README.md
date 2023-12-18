@@ -16,6 +16,7 @@ make dev
 ## test
 ```sh
 bun test
+bun test --only
 ```
 
 
