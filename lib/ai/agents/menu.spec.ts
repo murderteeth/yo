@@ -1,4 +1,3 @@
-import { expect, it } from 'bun:test'
 import { DEFAULT_MENU, next } from './menu'
 
 it('Returns default menu', async () => {

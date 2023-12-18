@@ -29,7 +29,7 @@ export default function Typer({ className, children }: { className?: string, chi
 }
 
 export function Cursor({ char = '░' }) {
-  const palette = [
+  const palette = useMemo(() => [
     colors.white,
     colors.purple[300],
     colors.red[300],
@@ -38,7 +38,7 @@ export function Cursor({ char = '░' }) {
     colors.blue[300],
     colors.violet[300],
     colors.orange[300]
-  ]
+  ], [])
 
   const [color, setColor] = useState(palette[0])
 
@@ -47,7 +47,7 @@ export function Cursor({ char = '░' }) {
       setColor(palette[Math.floor(Math.random() * palette.length)])
     }, 250)
     return () => clearInterval(interval)
-  }, [setColor])
+  }, [setColor, palette])
 
   return <div style={{ color: color }} className={`inline animate-flicker`}>{char}</div>
 }

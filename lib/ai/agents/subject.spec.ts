@@ -1,4 +1,3 @@
-import { expect, it } from 'bun:test'
 import { fetchVaults } from '../functions/vaults'
 import { next } from './subject'
 

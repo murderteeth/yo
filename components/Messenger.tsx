@@ -29,11 +29,14 @@ export default function Messenger() {
   const {messages} = useMessages()
   const eom = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
-    setTimeout(() => {
-      eom.current?.scrollIntoView({ behavior: "smooth" })
-    }, 100)
-  }, [messages])
+  // TODO: find another way to force the bottom of the chat to scroll into view after assistant responds
+  // BUILD ERROR: Type error: Property 'scrollIntoView' does not exist on type 'HTMLDivElement'
+  // twas a hack anyway
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     eom.current?.scrollIntoView({ behavior: "smooth" })
+  //   }, 100)
+  // }, [messages])
 
   return <div className={`
     w-full h-full grow px-6 flex flex-col gap-4 overflow-y-auto scroll-smooth 

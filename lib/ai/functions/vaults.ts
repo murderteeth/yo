@@ -36,7 +36,7 @@ const vaults = {
 export default vaults
 
 export async function fetchVaults() {
-  if(process.env.NODE_ENV === 'development') {
+  if(!process.env.VERCEL_ENV) { // if dev
     console.warn('fetch mock vaults')
     return transformYDaemonVaults(await fetchMocks(), true)
   } else {

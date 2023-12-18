@@ -1,6 +1,7 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { Button } from '.'
 import { PiWalletBold } from 'react-icons/pi'
+import Image from 'next/image'
 
 export default function Connect({ className }: { className?: string }) {
   return (
@@ -68,7 +69,7 @@ export default function Connect({ className }: { className?: string }) {
                         }}
                       >
                         {chain.iconUrl && (
-                          <img
+                          <Image
                             alt={chain.name ?? 'Chain icon'}
                             src={chain.iconUrl}
                             style={{ width: 12, height: 12 }}

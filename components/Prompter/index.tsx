@@ -9,6 +9,8 @@ import Menu from './Menu'
 import { useMenu } from '@/hooks/useMenu'
 import { useSubjects } from '@/hooks/useSubjects'
 
+let hello_timeout_handle: NodeJS.Timeout | undefined = undefined
+
 export default function Prompter({ className }: { className?: string }) {
   const { busy, setBusy } = useBusy()
   const { messages, setMessages } = useMessages()
@@ -84,7 +86,6 @@ export default function Prompter({ className }: { className?: string }) {
     focusPrompter()
   }, [promptInput, messages, setMessages, setMenu, setSubjects, setBusy, focusPrompter])
 
-  let hello_timeout_handle: NodeJS.Timeout | undefined = undefined
   useEffect(() => {
     if(hello_timeout_handle) { clearTimeout(hello_timeout_handle) }
     hello_timeout_handle = setTimeout(() => {

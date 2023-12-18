@@ -18,7 +18,7 @@ export default function AssistantMessage({message, latestMessage}: {message: Mes
       default:
         return <>{'component' + component}</>
     }
-  }, [latestMessage])
+  }, [])
 
   const onOption = useCallback((option: string) => {
     setMessages(current => [...current, {role: 'user', content: option}])
