@@ -6,11 +6,12 @@ import { next as nextMenu } from '@/lib/ai/agents/menu'
 import { DEFAULT_MENU } from '@/lib/ai/agents/menu'
 
 const hello = `Yo!
-I\'m the bot that helps you manage your assets with Yearn Finance
-I can help you with things like:
+I\'m the bot that helps you manage your assets with Yearn Finance. I can help you with things like:
+
 • Checking your balances
 • Deposits and withdrawals
 • Managing your own vault 👀
+
 lfg 🤘
 `
 

@@ -1,8 +1,6 @@
 import React, { useCallback, useMemo } from 'react'
-import colors from 'tailwindcss/colors'
 import { Button } from '../controls'
 import { useMessages } from '../../hooks/useMessages'
-import { BeatLoader } from 'react-spinners'
 import { MessageGram } from '../Messenger'
 import Typer, { Cursor } from '../controls/Typer'
 
@@ -27,7 +25,7 @@ export default function AssistantMessage({message, latestMessage}: {message: Mes
   }, [setMessages])
 
   return <div className={'w-64 sm:w-96 flex flex-col gap-4'}>
-    {contentType === 'text' && <Typer>{message.content as string}</Typer>}
+    {contentType === 'text' && <Typer className="whitespace-pre-line">{message.content as string}</Typer>}
 
     {contentType === 'options' && (message.content as string[]).map((option, index) => {
       return <Button disabled={!latestMessage} key={index} onClick={() => onOption(option)}>{option}</Button>

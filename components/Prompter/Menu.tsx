@@ -15,7 +15,7 @@ export default function Menu({ onSelect }: { onSelect: (option: string) => void 
     return Math.random() * .25
   }
 
-  return <div className="flex items-center gap-4">
+  return <div className="flex flex-wrap items-center gap-4">
     {menu.map((option) => <AnimatePresence key={option}>
       <motion.div key={option}
         transition={{ type: 'spring', stiffness: 2000, damping: 24, delay: randomDelay() }}

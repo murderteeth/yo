@@ -1,6 +1,6 @@
 import { OpenAI } from 'openai'
+import vaults from './functions/vaults'
 import knowledge from './functions/knowledge'
-import analytics from './functions/analytics'
 
 export const FAST_MODEL = 'gpt-3.5-turbo-1106'
 export const STRONG_MODEL = 'gpt-4-1106-preview'
@@ -32,7 +32,7 @@ export interface GptFunctionArgs {
   query: string
 }
 
-export const gptFunctions = { knowledge, analytics }
+export const gptFunctions = { vaults, knowledge }
 
 export const gptFunctionDefs = Object.values(gptFunctions).map(func => func.def)
 

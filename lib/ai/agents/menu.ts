@@ -1,10 +1,9 @@
 import { FAST_MODEL, gptFunctionDefs, next_message } from '@/lib/ai'
-import { oneLine } from 'common-tags'
 import { ChatCompletionMessageParam } from 'openai/resources/index.mjs'
 
 export const DEFAULT_MENU = ['Vaults', 'Balances', 'Deposits', 'Chef']
 
-const system_prompt = oneLine`
+const system_prompt = `
 ASSIGNMENT
 - review the assistant's message and respond with a list of relevant menu options.
 - use the MENUS structure to inform your response.
@@ -18,11 +17,8 @@ MENUS
   }
 ]
 
-SPECIAL_CASE
-if the message seems 
-
 OUTPUT_FORMAT
-comma separated list of options. NO OTHER TEXT!
+a comma separated list of options. NO OTHER TEXT!
 
 OUTPUT_EXAMPLE
 Option One, Option Two, Option Three

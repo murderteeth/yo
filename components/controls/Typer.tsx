@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import colors from 'tailwindcss/colors'
 
-export default function Typer({ children }: { children?: string }) {
+export default function Typer({ className, children }: { className?: string, children?: string }) {
   const speed = 20
   const [index, setIndex] = useState(0)
   const length = useMemo(() => children?.length || 0, [children])
@@ -22,7 +22,7 @@ export default function Typer({ children }: { children?: string }) {
     return () => clearInterval(interval)
   }, [length, setIndex, setTyping])
 
-  return <div>
+  return <div className={className}>
     {typed}
     {typing && <Cursor />}
   </div>

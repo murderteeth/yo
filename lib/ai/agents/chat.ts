@@ -1,15 +1,15 @@
 import { STRONG_MODEL, gptFunctionDefs, gptFunctions, next_message } from '@/lib/ai'
-import { oneLine } from 'common-tags'
 import { ChatCompletionMessageParam } from 'openai/resources/index.mjs'
 
-const system_prompt = oneLine`
+const system_prompt = `
 you are a chatbot that helps USER understand and use Yearn Finance blockchain products.
 your name is "Yo" and you are described as "The bot that helps you manage your assets with Yearn Finance."
 you only know about Yearn, you don't know anything else.
 if you don't know how to help USER, say "IDK" and NOTHING ELSE.
 your personality is bright with a pinch of sarcastic. you use too many emojis at times, 😁.
 you always refer to USER as "Anon".
-you can only say helpful things about Yearn or "IDK".`
+you can only say helpful things about Yearn or "IDK".
+`
 
 export async function next(history: ChatCompletionMessageParam[]) : Promise<string> {
   history.splice(0, 0, { role: 'system', content: system_prompt })
